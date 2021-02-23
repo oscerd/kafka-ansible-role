@@ -1,0 +1,52 @@
+---
+# tasks file for kafka
+  - yum:
+      name: tar
+      state: latest
+
+  - name: Ansible check Kafka distro kit exists.
+    stat:
+      path: "{{ path_dir }}/kafka_2.12-{{ kafka_version }}.tgz"
+    register: kafka_kit_details
+
+  - debug:
+      msg: "The {{ path_dir }}/{{ kafka_version }}.tgz doesn't exist"
+    when: not kafka_kit_details.stat.exists
+    failed_when:
+
+  - name: download kafka
+    when: not kafka_kit_details.stat.exists
+    get_url:
+      url: https://downloads.apache.org/kafka/{{ kafka_version }}/kafka_2.12-{{ kafka_version }}.tgz
+      dest: "{{ path_dir }}"
+      mode: 0440 
+
+  - name: Ansible check directory exists.
+    stat:
+      path: "{{ unzip_dest_dir }}"
+    register: file_details
+
+  - debug:
+      msg: "The directory {{ unzip_dest_dir }} exists"
+    when: file_details.stat.exists
+
+  - name: Create directory if it doesn't exists.
+    file:
+      path: "{{ unzip_dest_dir }}"
+      state: directory
+      recurse: yes
+      force: yes
+    when: not file_details.stat.exists 
+
+  - name: Ansible unzip destination directory exists.
+    stat:
+      path: "{{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}"
+    register: unzipdir
+
+  - name: unarchive the Kafka distro
+    shell: "tar -xzf {{ path_dir }}/kafka_2.12-{{ kafka_version }}.tgz -C {{ unzip_dest_dir }}"
+    args:
+      warn: false
+    when: not unzipdir.stat.exists 
+
+

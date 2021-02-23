@@ -1,0 +1,8 @@
+galaxy_info:
+  author: Andrea Cosentino
+  description: Camel Kafka Connector ansible Role
+
+  # issue_tracker_url: https://github.com/oscerd/camel-kafka-connector-ansible-role
+
+  # Some suggested licenses:
+  license: Apache

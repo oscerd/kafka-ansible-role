@@ -81,3 +81,10 @@
       force: yes
     when: plugin_path_dir is defined and not plugin_path_details.stat.exists
 
+  - name: Run zookeeper as Daemon
+    shell: '{{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}/bin/zookeeper-server-start.sh -daemon {{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/zookeeper.properties'
+    when: start_kafka
+
+  - name: Run kafka as Daemon
+    shell: '{{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}/bin/kafka-server-start.sh -daemon {{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/server.properties'
+    when: start_kafka

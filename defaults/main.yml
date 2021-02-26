@@ -1,2 +1,3 @@
 ---
 # defaults file for Kafka
+start_kafka: false

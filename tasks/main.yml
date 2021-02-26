@@ -49,4 +49,16 @@
       warn: false
     when: not unzipdir.stat.exists 
 
+  - name: Override plugin.path if the plugin.path variable is defined for connect standalone properties
+    lineinfile:
+      dest: '{{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/connect-standalone.properties'
+      line: 'plugin.path={{plugin_path_dir}}'
+      regexp: '#plugin.path='
+    when: plugin_path_dir is defined
 
+  - name: Override plugin.path if the plugin.path variable is defined for connect distributed properties
+    lineinfile:
+      dest: '{{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/connect-distributed.properties'
+      line: 'plugin.path={{plugin_path_dir}}'
+      regexp: '#plugin.path='
+    when: plugin_path_dir is defined

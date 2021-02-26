@@ -53,12 +53,31 @@
     lineinfile:
       dest: '{{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/connect-standalone.properties'
       line: 'plugin.path={{plugin_path_dir}}'
-      regexp: '#plugin.path='
+      regexp: 'plugin.path=*'
     when: plugin_path_dir is defined
 
   - name: Override plugin.path if the plugin.path variable is defined for connect distributed properties
     lineinfile:
       dest: '{{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/connect-distributed.properties'
       line: 'plugin.path={{plugin_path_dir}}'
-      regexp: '#plugin.path='
+      regexp: 'plugin.path=*'
     when: plugin_path_dir is defined
+
+  - name: Check plugin.path directory exists.
+    stat:
+      path: "{{ plugin_path_dir }}"
+    register: plugin_path_details
+    when: plugin_path_dir is defined
+
+  - debug:
+      msg: "The directory {{ plugin_path_dir }} exists"
+    when: plugin_path_dir is defined and plugin_path_details.stat.exists 
+
+  - name: Create plugin.path directory if it doesn't exists.
+    file:
+      path: "{{ plugin_path_dir }}"
+      state: directory
+      recurse: yes
+      force: yes
+    when: plugin_path_dir is defined and not plugin_path_details.stat.exists
+

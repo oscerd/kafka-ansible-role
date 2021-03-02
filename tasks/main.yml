@@ -23,42 +23,42 @@
 
   - name: Ansible check directory exists.
     stat:
-      path: "{{ unzip_dest_dir }}"
+      path: "{{ unarchive_dest_dir }}"
     register: file_details
 
   - debug:
-      msg: "The directory {{ unzip_dest_dir }} exists"
+      msg: "The directory {{ unarchive_dest_dir }} exists"
     when: file_details.stat.exists
 
   - name: Create directory if it doesn't exists.
     file:
-      path: "{{ unzip_dest_dir }}"
+      path: "{{ unarchive_dest_dir }}"
       state: directory
       recurse: yes
       force: yes
     when: not file_details.stat.exists 
 
-  - name: Ansible unzip destination directory exists.
+  - name: Ansible unarchive destination directory exists.
     stat:
-      path: "{{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}"
-    register: unzipdir
+      path: "{{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}"
+    register: unarchivedir
 
   - name: unarchive the Kafka distro
-    shell: "tar -xzf {{ path_dir }}/kafka_2.12-{{ kafka_version }}.tgz -C {{ unzip_dest_dir }}"
+    shell: "tar -xzf {{ path_dir }}/kafka_2.12-{{ kafka_version }}.tgz -C {{ unarchive_dest_dir }}"
     args:
       warn: false
-    when: not unzipdir.stat.exists 
+    when: not unarchivedir.stat.exists 
 
   - name: Override plugin.path if the plugin.path variable is defined for connect standalone properties
     lineinfile:
-      dest: '{{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/connect-standalone.properties'
+      dest: '{{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/connect-standalone.properties'
       line: 'plugin.path={{plugin_path_dir}}'
       regexp: 'plugin.path=*'
     when: plugin_path_dir is defined
 
   - name: Override plugin.path if the plugin.path variable is defined for connect distributed properties
     lineinfile:
-      dest: '{{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/connect-distributed.properties'
+      dest: '{{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/connect-distributed.properties'
       line: 'plugin.path={{plugin_path_dir}}'
       regexp: 'plugin.path=*'
     when: plugin_path_dir is defined
@@ -99,9 +99,10 @@
     when: connectors is defined and plugin_path_dir is defined
 
   - name: Run zookeeper as Daemon
-    shell: '{{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}/bin/zookeeper-server-start.sh -daemon {{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/zookeeper.properties'
+    shell: '{{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/bin/zookeeper-server-start.sh -daemon {{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/zookeeper.properties'
     when: start_kafka
 
   - name: Run kafka as Daemon
-    shell: '{{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}/bin/kafka-server-start.sh -daemon {{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/server.properties'
+    shell: '{{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/bin/kafka-server-start.sh -daemon {{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/server.properties'
     when: start_kafka
+

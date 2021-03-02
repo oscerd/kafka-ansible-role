@@ -81,6 +81,15 @@
       force: yes
     when: plugin_path_dir is defined and not plugin_path_details.stat.exists
 
+  - name: Download connectors
+    get_url:
+      url: "https://repo1.maven.org/maven2/org/apache/camel/kafkaconnector/camel-{{ item }}-kafka-connector/{{ connectors_version }}/camel-{{ item }}-kafka-connector-{{ connectors_version }}-package.tar.gz"
+      dest: "{{ plugin_path_dir }}"
+      mode: 0440 
+    with_items:
+      - '{{ connectors }}'
+    when: connectors is defined and plugin_path_dir is defined
+
   - name: Run zookeeper as Daemon
     shell: '{{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}/bin/zookeeper-server-start.sh -daemon {{ unzip_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/zookeeper.properties'
     when: start_kafka

@@ -1,3 +1,4 @@
 ---
 # defaults file for Kafka
 start_kafka: false
+connectors_version: 0.8.0

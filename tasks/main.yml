@@ -84,8 +84,16 @@
   - name: Download connectors
     get_url:
       url: "https://repo1.maven.org/maven2/org/apache/camel/kafkaconnector/camel-{{ item }}-kafka-connector/{{ connectors_version }}/camel-{{ item }}-kafka-connector-{{ connectors_version }}-package.tar.gz"
-      dest: "{{ plugin_path_dir }}"
-      mode: 0440 
+      dest: "{{ plugin_path_dir }}/camel-{{ item }}-kafka-connector-{{ connectors_version }}-package.tar.gz"
+      mode: 0440
+    with_items:
+      - '{{ connectors }}'
+    when: connectors is defined and plugin_path_dir is defined 
+
+  - name: Unarchive connectors
+    shell: "tar -xzf {{ plugin_path_dir }}/camel-{{ item }}-kafka-connector-{{ connectors_version }}-package.tar.gz -C {{ plugin_path_dir }}"
+    args:
+      warn: false 
     with_items:
       - '{{ connectors }}'
     when: connectors is defined and plugin_path_dir is defined

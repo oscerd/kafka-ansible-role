@@ -28,6 +28,6 @@ An example of Kafka role use:
 | path_dir                             | The location of the Kafka tar.gz distribution                                       |
 | unarchive_dest_dir                   | The location of the dir where to unarchive the Kafka tar.gz distribution            |
 | plugin_path_dir                      | The plugin.path value to be set in connect standalone configurations                |
-| connectors_version                   | The camel-kafka-connector connectors version                                        | 0.8.0
+| connectors_version                   | The camel-kafka-connector connectors version                                        | 0.10.1
 | connectors                           | A list of camel-kafka-connectors (eg. aws2-s3, aws2-sqs)                            |
 | start_kafka                          | Automatically start kafka and zookeeper as daemons                                  | false

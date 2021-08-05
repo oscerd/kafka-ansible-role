@@ -4,6 +4,12 @@
 - name: Verify
   hosts: all
   tasks:
-  - name: Example assertion
-    assert:
-      that: true
+    - name: Confirm Kafka folder has been created
+      stat:
+        path: /opt/kafka/
+      register: result_details
+
+    - name: Assert Kafka exists
+      assert:
+        that:
+          - "result_details.stat.exists"

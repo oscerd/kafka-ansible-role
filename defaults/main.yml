@@ -2,3 +2,7 @@
 # defaults file for Kafka
 start_kafka: false
 connectors_version: 0.10.1
+kafka_version: 2.8.0
+path_dir: /opt/
+unarchive_dest_dir: /opt/kafka/
+plugin_path_dir: /home/user/connectors/

@@ -2,3 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
+    - name: "Include kafka-ansible-role"
+      include_role:
+        name: "kafka-ansible-role"

@@ -31,3 +31,5 @@ An example of Kafka role use:
 | connectors_version                   | The camel-kafka-connector connectors version                                        | 0.10.1
 | connectors                           | A list of camel-kafka-connectors (eg. aws2-s3, aws2-sqs)                            |
 | start_kafka                          | Automatically start kafka and zookeeper as daemons                                  | false
+| wait_time_zookeeper                  | Wait for this time after starting zookeeper                                         | 10
+| wait_time_kafka                      | Wait for this time after starting kafka                                             | 10

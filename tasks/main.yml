@@ -99,11 +99,8 @@
     when: connectors is defined and plugin_path_dir is defined
 
   - name: Run zookeeper as Daemon
-    shell: '{{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/bin/zookeeper-server-start.sh -daemon {{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/zookeeper.properties'
+    shell: '{{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/bin/zookeeper-server-start.sh -daemon {{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/zookeeper.properties && sleep 10'
     when: start_kafka
-    register: results
-    - debug:
-        var: results.stdout    
 
   - name: Run kafka as Daemon
     shell: '{{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/bin/kafka-server-start.sh -daemon {{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/server.properties'

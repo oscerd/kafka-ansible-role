@@ -103,6 +103,6 @@
     when: start_kafka
 
   - name: Run kafka as Daemon
-    shell: '{{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/bin/kafka-server-start.sh -daemon {{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/server.properties && sleep 10'
+    shell: '{{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/bin/kafka-server-start.sh -daemon {{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/server.properties && sleep {{ wait_time_kafka }}'
     when: start_kafka
 

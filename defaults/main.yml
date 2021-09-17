@@ -7,3 +7,4 @@ path_dir: /opt/
 unarchive_dest_dir: /opt/kafka/
 plugin_path_dir: /home/user/connectors/
 wait_time_zookeeper: 10
+wait_time_kafka: 10

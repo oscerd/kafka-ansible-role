@@ -6,7 +6,7 @@
 
   - name: Ansible check Kafka distro kit exists.
     stat:
-      path: "{{ path_dir }}/kafka_2.12-{{ kafka_version }}.tgz"
+      path: "{{ path_dir }}/kafka_{{ scala_version }}-{{ kafka_version }}.tgz"
     register: kafka_kit_details
 
   - debug:
@@ -17,7 +17,7 @@
   - name: download kafka
     when: not kafka_kit_details.stat.exists
     get_url:
-      url: https://downloads.apache.org/kafka/{{ kafka_version }}/kafka_2.12-{{ kafka_version }}.tgz
+      url: https://downloads.apache.org/kafka/{{ kafka_version }}/kafka_{{ scala_version }}-{{ kafka_version }}.tgz
       dest: "{{ path_dir }}"
       mode: 0440 
 
@@ -40,25 +40,25 @@
 
   - name: Ansible unarchive destination directory exists.
     stat:
-      path: "{{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}"
+      path: "{{ unarchive_dest_dir }}/kafka_{{ scala_version }}-{{ kafka_version }}"
     register: unarchivedir
 
   - name: unarchive the Kafka distro
-    shell: "tar -xzf {{ path_dir }}/kafka_2.12-{{ kafka_version }}.tgz -C {{ unarchive_dest_dir }}"
+    shell: "tar -xzf {{ path_dir }}/kafka_{{ scala_version }}-{{ kafka_version }}.tgz -C {{ unarchive_dest_dir }}"
     args:
       warn: false
     when: not unarchivedir.stat.exists 
 
   - name: Override plugin.path if the plugin.path variable is defined for connect standalone properties
     lineinfile:
-      dest: '{{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/connect-standalone.properties'
+      dest: '{{ unarchive_dest_dir }}/kafka_{{ scala_version }}-{{ kafka_version }}/config/connect-standalone.properties'
       line: 'plugin.path={{plugin_path_dir}}'
       regexp: 'plugin.path=*'
     when: plugin_path_dir is defined
 
   - name: Override plugin.path if the plugin.path variable is defined for connect distributed properties
     lineinfile:
-      dest: '{{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/connect-distributed.properties'
+      dest: '{{ unarchive_dest_dir }}/kafka_{{ scala_version }}-{{ kafka_version }}/config/connect-distributed.properties'
       line: 'plugin.path={{plugin_path_dir}}'
       regexp: 'plugin.path=*'
     when: plugin_path_dir is defined
@@ -99,10 +99,10 @@
     when: connectors is defined and plugin_path_dir is defined
 
   - name: Run zookeeper as Daemon
-    shell: '{{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/bin/zookeeper-server-start.sh -daemon {{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/zookeeper.properties && sleep {{ wait_time_zookeeper }}'
+    shell: '{{ unarchive_dest_dir }}/kafka_{{ scala_version }}-{{ kafka_version }}/bin/zookeeper-server-start.sh -daemon {{ unarchive_dest_dir }}/kafka_{{ scala_version }}-{{ kafka_version }}/config/zookeeper.properties && sleep {{ wait_time_zookeeper }}'
     when: start_kafka
 
   - name: Run kafka as Daemon
-    shell: '{{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/bin/kafka-server-start.sh -daemon {{ unarchive_dest_dir }}/kafka_2.12-{{ kafka_version }}/config/server.properties && sleep {{ wait_time_kafka }}'
+    shell: '{{ unarchive_dest_dir }}/kafka_{{ scala_version }}-{{ kafka_version }}/bin/kafka-server-start.sh -daemon {{ unarchive_dest_dir }}/kafka_{{ scala_version }}-{{ kafka_version }}/config/server.properties && sleep {{ wait_time_kafka }}'
     when: start_kafka
 

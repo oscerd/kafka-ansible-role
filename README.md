@@ -10,7 +10,7 @@ An example of Kafka role use:
   
   roles:
     - role: camel-kafka-connector-ansible-role
-      kafka_version: 2.7.0
+      kafka_version: 2.8.1
       path_dir: /home/user/
       unarchive_dest_dir: /home/user/kafka/
       plugin_path_dir: /home/user/connectors/
@@ -24,7 +24,7 @@ An example of Kafka role use:
 
 | Name                                 | Description                                                                         | Default
 |--------------------------------------|-------------------------------------------------------------------------------------|-----------------------
-| kafka_version                        | The version of Kafka to be used                                                     |
+| kafka_version                        | The version of Kafka to be used                                                     | 2.8.1
 | path_dir                             | The location of the Kafka tar.gz distribution                                       |
 | unarchive_dest_dir                   | The location of the dir where to unarchive the Kafka tar.gz distribution            |
 | plugin_path_dir                      | The plugin.path value to be set in connect standalone configurations                |

@@ -2,9 +2,11 @@
 # defaults file for Kafka
 start_kafka: false
 scala_version: 2.12
-connectors_version: 0.11.0
-kafka_version: 2.8.1
+connectors_version: 0.10.1
+kafka_version: 2.8.0
 path_dir: /opt/
 unarchive_dest_dir: /opt/kafka/
 wait_time_zookeeper: 10
 wait_time_kafka: 10
+kafdrop_version: 3.30.0
+start_kafdrop: false

@@ -106,3 +106,29 @@
     shell: '{{ unarchive_dest_dir }}/kafka_{{ scala_version }}-{{ kafka_version }}/bin/kafka-server-start.sh -daemon {{ unarchive_dest_dir }}/kafka_{{ scala_version }}-{{ kafka_version }}/config/server.properties && sleep {{ wait_time_kafka }}'
     when: start_kafka
 
+  - debug:
+      msg: "The {{ path_dir }}/{{ kafka_version }}.tgz doesn't exist"
+    when: not kafka_kit_details.stat.exists
+    failed_when:
+
+  - name: Ansible check Kafdrop jar exists.
+    stat:
+      path: "{{ path_dir }}/kafdrop-{{kafdrop_version}}.jar"
+    register: kafdrop_details
+
+  - debug:
+      msg: "The {{ path_dir }}/kafdrop-{{kafdrop_version}}.jar doesn't exist"
+    when: not kafdrop_details.stat.exists
+    failed_when:
+
+  - name: download kafdrop
+    when: not kafdrop_details.stat.exists
+    get_url:
+      url: https://github.com/obsidiandynamics/kafdrop/releases/download/{{kafdrop_version}}/kafdrop-{{kafdrop_version}}.jar
+      dest: "{{ path_dir }}"
+      mode: 0440
+
+  - name: Run kafkadrop as Daemon
+    shell: nohup java --add-opens=java.base/sun.nio.ch=ALL-UNNAMED -jar {{ path_dir }}/kafdrop-{{kafdrop_version}}.jar --kafka.brokerConnect={{ansible_hostname}}:9092 </dev/null >/dev/null 2>&1 &
+    when: start_kafdrop 
+

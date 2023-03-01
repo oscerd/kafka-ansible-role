@@ -12,7 +12,6 @@
   - debug:
       msg: "The {{ path_dir }}/{{ kafka_version }}.tgz doesn't exist"
     when: not kafka_kit_details.stat.exists
-    failed_when:
 
   - name: download kafka
     when: not kafka_kit_details.stat.exists
@@ -46,7 +45,7 @@
   - name: unarchive the Kafka distro
     shell: "tar -xzf {{ path_dir }}/kafka_{{ scala_version }}-{{ kafka_version }}.tgz -C {{ unarchive_dest_dir }}"
     args:
-      warn: false
+      stdin: false
     when: not unarchivedir.stat.exists 
 
   - name: Override plugin.path if the plugin.path variable is defined for connect standalone properties
@@ -109,7 +108,6 @@
   - debug:
       msg: "The {{ path_dir }}/{{ kafka_version }}.tgz doesn't exist"
     when: not kafka_kit_details.stat.exists
-    failed_when:
 
   - name: Ansible check Kafdrop jar exists.
     stat:
@@ -119,7 +117,6 @@
   - debug:
       msg: "The {{ path_dir }}/kafdrop-{{kafdrop_version}}.jar doesn't exist"
     when: not kafdrop_details.stat.exists
-    failed_when:
 
   - name: download kafdrop
     when: not kafdrop_details.stat.exists
